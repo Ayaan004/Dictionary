@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Dictionary - Find Definitions, Synonyms & More</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="12" fill="url(#gradient)"/>
+                    <path d="M12 10H20C24.4183 10 28 13.5817 28 18C28 22.4183 24.4183 26 20 26H16V30H12V10Z" fill="white"/>
+                    <path d="M16 14V22H20C22.2091 22 24 20.2091 24 18C24 15.7909 22.2091 14 20 14H16Z" fill="url(#gradient)"/>
+                    <defs>
+                        <linearGradient id="gradient" x1="0" y1="0" x2="40" y2="40">
+                            <stop offset="0%" stop-color="#667eea"/>
+                            <stop offset="100%" stop-color="#764ba2"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">Dictionary</span>
+            </div>
+            <div class="header-stats">
+                <button class="history-btn" id="historyBtn" title="View Search History">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>History</span>
+                </button>
+                <div class="stat-group">
+                    <div class="stat">
+                        <span class="stat-number" id="wordCount">0</span>
+                        <span class="stat-label">Words Searched</span>
+                    </div>
+                    <button class="reset-btn" id="resetBtn" title="Reset search count">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="1 4 1 10 7 10"></polyline>
+                            <polyline points="23 20 23 14 17 14"></polyline>
+                            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="search-container">
+                <h1 class="main-title">Discover the meaning of words</h1>
+                <p class="subtitle">Explore definitions, synonyms, antonyms, and examples</p>
+                
+                <div class="search-box">
+                    <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search for any word..." autocomplete="off">
+                    <button id="searchBtn" class="search-btn">
+                        <span class="btn-text">Search</span>
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="suggestions" id="suggestions"></div>
+            </div>
+        </section>
+
+        <!-- Loading Spinner -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Searching dictionary...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <h3>Word not found</h3>
+            <p id="errorText">Sorry, we couldn't find that word. Please try another search.</p>
+        </div>
+
+        <!-- Results Section -->
+        <section class="results-section" id="results">
+            <div class="word-header">
+                <div class="word-info">
+                    <h2 class="word-title" id="wordTitle"></h2>
+                    <span class="phonetic" id="phonetic"></span>
+                </div>
+                <button class="audio-btn" id="audioBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" data-tab="meaning">Meaning</button>
+                <button class="tab" data-tab="definitions">Definitions</button>
+                <button class="tab" data-tab="synonyms">Synonyms</button>
+                <button class="tab" data-tab="antonyms">Antonyms</button>
+                <button class="tab" data-tab="examples">Examples</button>
+            </div>
+
+            <div class="tab-content active" id="meaning">
+                <div class="meaning-summary" id="meaningSummary"></div>
+            </div>
+
+            <div class="tab-content" id="definitions">
+                <div class="meanings" id="meaningsContainer"></div>
+            </div>
+
+            <div class="tab-content" id="synonyms">
+                <div class="word-list" id="synonymsList"></div>
+            </div>
+
+            <div class="tab-content" id="antonyms">
+                <div class="word-list" id="antonymsList"></div>
+            </div>
+
+            <div class="tab-content" id="examples">
+                <div class="examples-list" id="examplesList"></div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Powered by Free Dictionary API | Built with ❤️</p>
+        </footer>
+    </div>
+
+    <!-- History Modal -->
+    <div class="modal-overlay" id="historyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Search History</h2>
+                <button class="modal-close" id="closeModal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="history-actions">
+                    <button class="clear-history-btn" id="clearHistoryBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        Clear All History
+                    </button>
+                </div>
+                <div class="history-list" id="historyList">
+                    <!-- History items will be inserted here -->
+                </div>
+                <div class="empty-history" id="emptyHistory">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <p>No search history yet</p>
+                    <span>Start searching for words to build your history</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
